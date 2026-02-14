@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+    window.onload = function() {
+        document.getElementById("urlInput").addEventListener("keydown", function(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                document.getElementById("submit").click();
+            }
+        });
+    };
+
+    function fetchData(url) {
+        document.getElementById("submit").disabled = true;
+        document.getElementById("submit").innerHTML = "<img src='https://global.discourse-cdn.com/sitepoint/original/3X/e/3/e352b26bbfa8b233050087d6cb32667da3ff809c.gif' width='15' height='15'></img>";
+
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "https://" + url;
+            document.getElementById("urlInput").value = url;
+        }
+        const postData = {
+        mode: "fetch",
+        url: url
+        };
+
+        let startstring = "<html><head><title>Blocked site viewer</title></head><body><button onclick='window.location.reload()' style='z-index: 1000; position: fixed; top: 10px; left: 10px;'>Go Back</button><span style='z-index: 1000; position: fixed; top: 10px; right: 10px; background-color: black; padding: 5px; border-radius: 5px; color: white;'>Blocked Site Viewer</span><div id='content'>";
+        let endstring = "</div></body></html>";
+        fetch("https://chibbit99.pythonanywhere.com/api", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(postData)
+        })
+        .then(response => response.text())
+        .then(data => 
+        document.write(startstring + data + endstring)) 
+        .catch(error => console.error("Error:", error));
+    }
+</script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #1d1d1d;
+        margin: 0;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    div {
+        background: rgb(0, 0, 0);
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 247, 255, 0.572);
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+    }
+
+    h1 {
+        margin-top: 0;
+        font-size: 26px;
+        color: #00c8ff;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #ffffff;
+        border-radius: 6px;
+        margin-top: 10px;
+        box-sizing: border-box;
+    }
+
+    button {
+        margin-top: 15px;
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        background: #0078ff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        background: #005fcc;
+    }
+</style>
+<title>Blocked site viewer</title>
+<body>
+<div>
+    <h1>Blocked site viewer</h1>
+    <input type="text" id="urlInput" placeholder="Enter URL">
+    <button onclick="fetchData(document.getElementById('urlInput').value)" id="submit">Fetch</button>
+</body>
+</html>
