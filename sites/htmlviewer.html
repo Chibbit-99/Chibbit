@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <div id="display"></div>
+  <script>
+    // Get the 'html' parameter from the URL
+    const params = new URLSearchParams(window.location.search);
+    const htmlContent = params.get('html');
+    
+    // Display the HTML if it exists
+    if (htmlContent) {
+      document.getElementById('display').innerHTML = htmlContent;
+    }
+  </script>
+</body>
+</html>
